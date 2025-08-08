@@ -2,7 +2,7 @@
 
 # Required Libraries
 import pyttsx3
-import speech_recognition as sr
+from logging import Logger
 
 def speak() -> bool:
     """Allows AI assistant to speak.
