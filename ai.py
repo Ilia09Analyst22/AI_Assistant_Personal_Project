@@ -1,3 +1,6 @@
+"""Interactive audio and text AI assistant"""
+
+# Required Libraries
 import pyttsx3
 import speech_recognition as sr
 import pywhatkit
