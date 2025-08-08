@@ -1,0 +1,31 @@
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(pacman, party, psych, rio, tidyverse)
+(world <- read_csv("World Overview.csv"))
+head(world)
+
+# Creating Bar Graph for Regions
+world %>%
+  select(Region) %>%
+  ggplot(aes(x = Region))
+
+# Creating Scatter Plot to compare Poverty Rate with Happiness
+qplot(`Severe Poverty Rate (% )`, `Happiness_level`, data = world)
+ggplot(world, 
+  aes(`Severe Poverty Rate (% )`, Happiness_level)) + 
+  geom_jitter() + 
+  geom_smooth(method = lm)
+
+
+# Creating Dot Plot to compare Level of Economic Development and Happiness
+qplot(Level_of_Development, Happiness_level, data = world)
+
+# Creating Dot Plot to compare Quality of Education and Happiness
+qplot(Quality_of_Education, Happiness_level, data = world)
+
+# Creating Box Plot to look at GDP per capita accross Regions
+world %>%
+  ggplot(aes(x = Region, y = `GDP_percapita (US Dollars)`)) +
+  geom_boxplot() +
+  coord_flip() +  # Horizontal boxplot
+  labs(x = "Region", y = "GDP per Capita (US Dollars)")
+
