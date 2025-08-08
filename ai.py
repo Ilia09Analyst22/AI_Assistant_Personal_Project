@@ -104,7 +104,8 @@ class AIProcessor:
         words = []
         noun = ""
         for ref in refs:
-            assert ref.replace(r"-%d", "") in pos_ref
+            base = ref.split('-')[0]
+            assert base in pos_ref
         for word in words_tagged:
             if word[1] == "DT":
                 words_tagged.remove(word)
