@@ -70,6 +70,16 @@ def chatbox(audio_text: str) -> bool:
             Logger.fatal("Failed to set up speech engine for AI assistant")
             return False
         
+        try:
+            r = sr.Recognizer()
+            with sr.Microphone() as mp:
+                r.pause_threshold(0.8)
+                print("Start speaking")
+                audio = r.listen(mp)
+        except Exception as err:
+            Logger.error(f"Failed to recognize speech: {err}")
+            return False
+        
     elif audio_text.lower() == "text":
         try:
             print("Hello, how can I help you")
