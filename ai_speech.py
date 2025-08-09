@@ -3,6 +3,11 @@
 # Required Libraries
 import pyttsx3
 from logging import Logger
+from selenium import webdriver as driver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def speak() -> bool:
     """Allows AI assistant to speak.
