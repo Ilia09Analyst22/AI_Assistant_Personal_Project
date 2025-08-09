@@ -3,6 +3,7 @@
 # Required Libraries
 import pyttsx3
 from logging import Logger
+import speech_recognition as sr
 from selenium import webdriver as driver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
