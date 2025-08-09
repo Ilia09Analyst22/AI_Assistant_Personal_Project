@@ -44,4 +44,34 @@ def speak() -> bool:
     Logger.info("Successfully ran AI speech")
     return True
 
+def chatbox(audio_text: str) -> bool:
+    """Interacts with ChatGPT for user requests.
+    
+    User gives audio of text input to the AI assistant and the assistant 
+      will search ChatGPT and reply to the user. The assistant begins by saying
+      "Hello, how can I help you?". The user then provides an audio or text response
+      for the assistant to enter into ChatGPT.
 
+    Args:
+        audio_text: A string value indicating either 'audio' or 'text'.
+    
+    Returns:
+        A boolean value indicating wether the chatbox function was
+          implemented successfully.
+    """
+    if audio_text.lower() == "audio":
+        try:
+            engine = pyttsx3.init()
+            engine.setProperty("voice", "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0")
+            engine.say("Hello, how can I help you?")
+            engine.runAndWait()
+        except Exception:
+            Logger.fatal("Failed to set up speech engine for AI assistant")
+            return False
+        
+    elif audio_text.lower() == "text":
+        try:
+            print("Hello, how can I help you")
+            pass
+        except Exception:
+            return False
