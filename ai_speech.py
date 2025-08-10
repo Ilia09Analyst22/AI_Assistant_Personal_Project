@@ -80,9 +80,46 @@ def chatbox(audio_text: str) -> bool:
             Logger.error(f"Failed to recognize speech: {err}")
             return False
         
+        try:
+            import time
+            browser = driver.Edge()
+            browser.get("https://chatgpt.com")
+            time.sleep(2)
+            browser.find_element(By.CLASS_NAME,"placeholder").send_keys(audio + Keys.ENTER)
+        except Exception as err:
+            Logger.error(f"Failed to enter data into ChatGPT: {err}")
+            return False
+
+        try:
+            time.sleep(10)
+            response = browser.find_element(By.XPATH, "//*[@id='thread']/div/div[1]/div/div/div[2]/article[2]/div/div/div[2]/div/div/div/p[1]").text()
+            pyttsx3.speak(response)
+        except Exception:
+            Logger.error("An error occurred. Likely the browser failed to locate ChatGPT reply!")
+            return False
+        
     elif audio_text.lower() == "text":
         try:
-            print("Hello, how can I help you")
-            pass
+            import time
+
+            print("Hello, how can I help you?")
+            text = input("Please enter some text: ")
+
+            browser = driver.Edge()
+            browser.get("https://chatgpt.com")
+            time.sleep(2)
+            browser.find_element(By.CLASS_NAME,"placeholder").send_keys(text + Keys.ENTER)
         except Exception:
+            Logger.error(f"Failed to enter data into ChatGPT: {err}")
             return False
+        
+        try:
+            time.sleep(10)
+            response = browser.find_element(By.XPATH, "//*[@id='thread']/div/div[1]/div/div/div[2]/article[2]/div/div/div[2]/div/div/div/p[1]").text()
+            print(response)
+        except Exception as err:
+            Logger.fatal("Failed to locate ChatGPT generated response")
+            return False
+    return True
+
+
