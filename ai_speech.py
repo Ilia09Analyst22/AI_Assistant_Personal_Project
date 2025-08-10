@@ -120,6 +120,10 @@ def chatbox(audio_text: str) -> bool:
         except Exception as err:
             Logger.fatal("Failed to locate ChatGPT generated response")
             return False
+    
+    else:
+        Logger.error("Invalid input")
+        return False
     return True
 
 
