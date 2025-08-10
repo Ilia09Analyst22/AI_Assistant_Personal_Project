@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, ElementNotVisibleException
 
 def speak() -> bool:
     """Allows AI assistant to speak.
@@ -99,7 +100,8 @@ def chatbox(audio_text: str) -> bool:
             pyttsx3.speak(response)
         except Exception:
             Logger.error("An error occurred. Likely the browser failed to locate ChatGPT reply!")
-            return False
+            response = WebDriverWait(browser, 20).until(EC.presence_of_element_located(response))
+            pyttsx3.speak(response)
         Logger.info("Selenium web browsing operation successful")
 
     elif audio_text.lower() == "text":
@@ -122,8 +124,14 @@ def chatbox(audio_text: str) -> bool:
             time.sleep(10)
             response = browser.find_element(By.XPATH, "//*[@id='thread']/div/div[1]/div/div/div[2]/article[2]/div/div/div[2]/div/div/div/p[1]").text()
             print(response)
-        except Exception as err:
+        except (NoSuchElementException, ElementNotVisibleException):
             Logger.fatal("Failed to locate ChatGPT generated response")
+            Logger.info("Retrying...")
+
+            response = WebDriverWait(browser, 20).until(EC.presence_of_element_located(response))
+            print(response)
+        except Exception as err:
+            Logger.error(f"An exception has occurred: {err}")
             return False
         Logger.info("Successfully retrieved response from ChatGPT")
 
