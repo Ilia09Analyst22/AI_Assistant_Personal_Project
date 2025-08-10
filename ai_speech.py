@@ -69,7 +69,8 @@ def chatbox(audio_text: str) -> bool:
         except Exception:
             Logger.fatal("Failed to set up speech engine for AI assistant")
             return False
-        
+        Logger.info("Successful setup of AI speech engine")
+
         try:
             r = sr.Recognizer()
             with sr.Microphone() as mp:
@@ -79,7 +80,8 @@ def chatbox(audio_text: str) -> bool:
         except Exception as err:
             Logger.error(f"Failed to recognize speech: {err}")
             return False
-        
+        Logger.info("Successful AI speech recognition")
+
         try:
             import time
             browser = driver.Edge()
@@ -89,6 +91,7 @@ def chatbox(audio_text: str) -> bool:
         except Exception as err:
             Logger.error(f"Failed to enter data into ChatGPT: {err}")
             return False
+        Logger.info("User request entered into CHATGPT successfully")
 
         try:
             time.sleep(10)
@@ -97,7 +100,8 @@ def chatbox(audio_text: str) -> bool:
         except Exception:
             Logger.error("An error occurred. Likely the browser failed to locate ChatGPT reply!")
             return False
-        
+        Logger.info("Selenium web browsing operation successful")
+
     elif audio_text.lower() == "text":
         try:
             import time
@@ -112,7 +116,8 @@ def chatbox(audio_text: str) -> bool:
         except Exception:
             Logger.error(f"Failed to enter data into ChatGPT: {err}")
             return False
-        
+        Logger.info("Entered user request into CHATGPT")
+
         try:
             time.sleep(10)
             response = browser.find_element(By.XPATH, "//*[@id='thread']/div/div[1]/div/div/div[2]/article[2]/div/div/div[2]/div/div/div/p[1]").text()
@@ -120,10 +125,12 @@ def chatbox(audio_text: str) -> bool:
         except Exception as err:
             Logger.fatal("Failed to locate ChatGPT generated response")
             return False
-    
+        Logger.info("Successfully retrieved response from ChatGPT")
+
     else:
         Logger.error("Invalid input")
         return False
+    Logger.info("All operations were successfull!")
     return True
 
 
