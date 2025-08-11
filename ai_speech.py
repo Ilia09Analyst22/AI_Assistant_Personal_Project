@@ -154,4 +154,18 @@ def voice_interact(voice_id: str | float, requests: int) -> bool:
         except Exception as err:
             Logger.error(f"Something went wrong: {err}")
             return False
+    
+def text_interact(requests: int) -> bool:
+    """Interactive AI text agent.
+    
+    Args:
+        requests: Number of requests before stopping the agent.
+    """
+    for request in range(requests):
+        try:
+            chatbox("text")
+        except Exception as err:
+            Logger.error(f"Something went wrong: {err}")
+            return False
+    return True
 
