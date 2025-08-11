@@ -148,8 +148,7 @@ def voice_interact(voice_id: str | float, requests: int) -> bool:
         voice_id: Voice ID for AI speech.
         requests: Number of requests before stopping the agent.
     """
-    on_request = 1
-    while on_request != requests:
+    for request in range(requests):
         try:
             chatbox("audio")
         except Exception as err:
