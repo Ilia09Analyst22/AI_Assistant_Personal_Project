@@ -141,4 +141,18 @@ def chatbox(audio_text: str) -> bool:
     Logger.info("All operations were successfull!")
     return True
 
+def voice_interact(voice_id: str | float, requests: int) -> bool:
+    """Interactive AI voice agent.
+
+    Args:
+        voice_id: Voice ID for AI speech.
+        requests: Number of requests before stopping the agent.
+    """
+    on_request = 1
+    while on_request != requests:
+        try:
+            chatbox("audio")
+        except Exception as err:
+            Logger.error(f"Something went wrong: {err}")
+            return False
 
