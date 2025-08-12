@@ -10,6 +10,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, ElementNotVisibleException
+from ai_speech_logging import speech_logging, chat_logging, voice_interact_logging, text_interact_logging
 
 def speak() -> bool:
     """Allows AI assistant to speak.
