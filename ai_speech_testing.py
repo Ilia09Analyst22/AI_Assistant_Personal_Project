@@ -14,3 +14,12 @@ class TestAISpeech(TestCase):
             True if AI voice can be heard, False otherwise.
         """
         self.assertTrue(speak())
+    
+    def test_chatbox(self) -> bool:
+        """Testing the chatbox function of AI assistant.
+        
+        Returns:
+            Boolean value indicating successful execution of chatbox function.
+        """
+        self.assertTrue(chatbox())
+
