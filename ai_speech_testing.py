@@ -21,5 +21,7 @@ class TestAISpeech(TestCase):
         Returns:
             Boolean value indicating successful execution of chatbox function.
         """
-        self.assertTrue(chatbox())
+        import random
+        audio_or_text = random.choice(["audio", "text"])
+        self.assertTrue(chatbox(audio_or_text))
 
