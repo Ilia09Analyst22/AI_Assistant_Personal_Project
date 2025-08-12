@@ -13,6 +13,8 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk import pos_tag, RegexpParser
 import random
 import selenium.webdriver as driver
+from ai_speech_logging import voice_interact_logging, text_interact_logging, speech_logging
+test_result = random.choice([True, False])
 
 class AIProcessor:
     """Abstract class for processing natural language.
@@ -212,6 +214,7 @@ class AIAssistant(AIProcessor):
         
         return response
     
+    @speech_logging(test_result)
     def speak(self, message) -> None:
         """A method to allow AI assistant to speak.
         
@@ -233,7 +236,8 @@ class AIAssistant(AIProcessor):
         # Transform text to audio
         self.speak(text)
 
-    
+    @text_interact_logging(test_result)
+    @voice_interact_logging(test_result)
     def assistant(self, voice: bool = True, set_basic: bool = False) -> None:
         """Main method to activate AI assistant.
         
