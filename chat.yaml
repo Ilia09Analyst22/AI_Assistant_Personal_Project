@@ -1,0 +1,10 @@
+OpenSourceChatAgent:
+  Engine: ChatGPT
+  Model: GPT-4o
+  Config:
+    Name: chatgpt.com
+    Server: Unknown
+    IPv4: 172.64.155.209
+    IPv6: fe80::2223:51ff:fe9f:8e43
+OpenSourceAIActivation:
+  Active: True
