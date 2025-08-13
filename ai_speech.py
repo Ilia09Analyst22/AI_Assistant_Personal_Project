@@ -15,7 +15,6 @@ from random import choice
 
 choose_random_test_result = choice([True, False])
 
-@speech_logging(choose_random_test_result)
 def speak() -> bool:
     """Allows AI assistant to speak.
 
@@ -51,7 +50,6 @@ def speak() -> bool:
     Logger.info("Successfully ran AI speech")
     return True
 
-@chat_logging(choose_random_test_result)
 def chatbox(audio_text: str) -> bool:
     """Interacts with ChatGPT for user requests.
     
@@ -147,7 +145,6 @@ def chatbox(audio_text: str) -> bool:
     Logger.info("All operations were successfull!")
     return True
 
-@voice_interact_logging(choose_random_test_result)
 def voice_interact(voice_id: str | float, requests: int) -> bool:
     """Interactive AI voice agent.
 
@@ -163,7 +160,6 @@ def voice_interact(voice_id: str | float, requests: int) -> bool:
             return False
     return True
 
-@text_interact_logging(choose_random_test_result)
 def text_interact(requests: int) -> bool:
     """Interactive AI text agent.
     
