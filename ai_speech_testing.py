@@ -48,3 +48,7 @@ class TestAISpeech(TestCase):
         """
         num_reqs = random.choice(range(10))
         self.assertTrue(text_interact(num_reqs))
+
+if __name__ == "__main__":
+    import unittest
+    unittest.main()
