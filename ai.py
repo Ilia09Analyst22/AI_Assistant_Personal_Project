@@ -214,7 +214,6 @@ class AIAssistant(AIProcessor):
         
         return response
     
-    @speech_logging(test_result)
     def speak(self, message) -> None:
         """A method to allow AI assistant to speak.
         
@@ -236,8 +235,6 @@ class AIAssistant(AIProcessor):
         # Transform text to audio
         self.speak(text)
 
-    @text_interact_logging(test_result)
-    @voice_interact_logging(test_result)
     def assistant(self, voice: bool = True, set_basic: bool = False) -> None:
         """Main method to activate AI assistant.
         
