@@ -178,3 +178,4 @@ def text_interact(requests: int) -> bool:
             return False
     return True
 
+speak()
