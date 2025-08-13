@@ -22,21 +22,22 @@ def speak() -> bool:
     Returns:
         Boolean value indicating wether speach was successful.
     """
+    log = Logger("Speak function")
     try:
         # Initialize voice engine
         engine = pyttsx3.init()
     except Exception as err:
-        Logger.error(f"Failed to setup AI speech engine: {err}")
+        Logger.error(log, f"Failed to setup AI speech engine: {err}")
         return False
-    Logger.info("AI speech setup successful")
+    Logger.info(log, "AI speech setup successful")
 
     try:
         # Set the voice of the AI assistant
         engine.setProperty("voice", "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0")
     except Exception as err:
-        Logger.error(f"Failed to set the voice for the AI assistant: {err}")
+        Logger.error(log, f"Failed to set the voice for the AI assistant: {err}")
         return False
-    Logger.info("AI voice was set successfully")
+    Logger.info(log, "AI voice was set successfully")
 
     try:
         # Tell the assistant to speak
@@ -45,10 +46,10 @@ def speak() -> bool:
         # Run the interactive assistant
         engine.runAndWait()
     except Exception:
-        Logger.error("AI speak function failed during runtime")
+        Logger.error(log, "AI speak function failed during runtime")
         return False
     
-    Logger.info("Successfully ran AI speech")
+    Logger.info(log, "Successfully ran AI speech")
     return True
 
 @chat_logging(choose_random_test_result)
@@ -67,6 +68,7 @@ def chatbox(audio_text: str) -> bool:
         A boolean value indicating wether the chatbox function was
           implemented successfully.
     """
+    log = Logger("Chatbox function")
     if audio_text.lower() == "audio":
         try:
             engine = pyttsx3.init()
@@ -74,7 +76,7 @@ def chatbox(audio_text: str) -> bool:
             engine.say("Hello, how can I help you?")
             engine.runAndWait()
         except Exception:
-            Logger.fatal("Failed to set up speech engine for AI assistant")
+            Logger.fatal(log, "Failed to set up speech engine for AI assistant")
             return False
         Logger.info("Successful setup of AI speech engine")
 
@@ -85,9 +87,9 @@ def chatbox(audio_text: str) -> bool:
                 print("Start speaking")
                 audio = r.listen(mp)
         except Exception as err:
-            Logger.error(f"Failed to recognize speech: {err}")
+            Logger.error(log, f"Failed to recognize speech: {err}")
             return False
-        Logger.info("Successful AI speech recognition")
+        Logger.info(log, "Successful AI speech recognition")
 
         try:
             import time
@@ -96,19 +98,19 @@ def chatbox(audio_text: str) -> bool:
             time.sleep(2)
             browser.find_element(By.CLASS_NAME,"placeholder").send_keys(audio + Keys.ENTER)
         except Exception as err:
-            Logger.error(f"Failed to enter data into ChatGPT: {err}")
+            Logger.error(log, f"Failed to enter data into ChatGPT: {err}")
             return False
-        Logger.info("User request entered into CHATGPT successfully")
+        Logger.info(log, "User request entered into CHATGPT successfully")
 
         try:
             time.sleep(10)
             response = browser.find_element(By.XPATH, "//*[@id='thread']/div/div[1]/div/div/div[2]/article[2]/div/div/div[2]/div/div/div/p[1]").text()
             pyttsx3.speak(response)
         except Exception:
-            Logger.error("An error occurred. Likely the browser failed to locate ChatGPT reply!")
+            Logger.error(log, "An error occurred. Likely the browser failed to locate ChatGPT reply!")
             response = WebDriverWait(browser, 20).until(EC.presence_of_element_located(response))
             pyttsx3.speak(response)
-        Logger.info("Selenium web browsing operation successful")
+        Logger.info(log, "Selenium web browsing operation successful")
 
     elif audio_text.lower() == "text":
         try:
@@ -122,29 +124,29 @@ def chatbox(audio_text: str) -> bool:
             time.sleep(2)
             browser.find_element(By.CLASS_NAME,"placeholder").send_keys(text + Keys.ENTER)
         except Exception:
-            Logger.error(f"Failed to enter data into ChatGPT: {err}")
+            Logger.error(log, f"Failed to enter data into ChatGPT: {err}")
             return False
-        Logger.info("Entered user request into CHATGPT")
+        Logger.info(log, "Entered user request into CHATGPT")
 
         try:
             time.sleep(10)
             response = browser.find_element(By.XPATH, "//*[@id='thread']/div/div[1]/div/div/div[2]/article[2]/div/div/div[2]/div/div/div/p[1]").text()
             print(response)
         except (NoSuchElementException, ElementNotVisibleException):
-            Logger.fatal("Failed to locate ChatGPT generated response")
-            Logger.info("Retrying...")
+            Logger.fatal(log, "Failed to locate ChatGPT generated response")
+            Logger.info(log, "Retrying...")
 
             response = WebDriverWait(browser, 20).until(EC.presence_of_element_located(response))
             print(response)
         except Exception as err:
-            Logger.error(f"An exception has occurred: {err}")
+            Logger.error(log, f"An exception has occurred: {err}")
             return False
-        Logger.info("Successfully retrieved response from ChatGPT")
+        Logger.info(log, "Successfully retrieved response from ChatGPT")
 
     else:
-        Logger.error("Invalid input")
+        Logger.error(log, "Invalid input")
         return False
-    Logger.info("All operations were successfull!")
+    Logger.info(log, "All operations were successfull!")
     return True
 
 @voice_interact_logging(choose_random_test_result)
@@ -155,11 +157,12 @@ def voice_interact(voice_id: str | float, requests: int) -> bool:
         voice_id: Voice ID for AI speech.
         requests: Number of requests before stopping the agent.
     """
+    log = Logger("Voice Interact Logger")
     for request in range(requests):
         try:
             chatbox("audio")
         except Exception as err:
-            Logger.error(f"Something went wrong: {err}")
+            Logger.error(log, f"Something went wrong: {err}")
             return False
     return True
 
@@ -170,11 +173,12 @@ def text_interact(requests: int) -> bool:
     Args:
         requests: Number of requests before stopping the agent.
     """
+    log = Logger("Text Interact Logger")
     for request in range(requests):
         try:
             chatbox("text")
         except Exception as err:
-            Logger.error(f"Something went wrong: {err}")
+            Logger.error(log, f"Something went wrong: {err}")
             return False
     return True
 
