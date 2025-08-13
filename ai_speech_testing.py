@@ -3,6 +3,7 @@
 # Required Libraries
 from unittest.case import TestCase
 from ai_speech import speak, chatbox, voice_interact, text_interact
+import random
 
 class TestAISpeech(TestCase):
     """Testbase for testing AI speech functions."""
@@ -21,7 +22,6 @@ class TestAISpeech(TestCase):
         Returns:
             Boolean value indicating successful execution of chatbox function.
         """
-        import random
         audio_or_text = random.choice(["audio", "text"])
         self.assertTrue(chatbox(audio_or_text))
 
@@ -31,7 +31,6 @@ class TestAISpeech(TestCase):
         Returns:
             True if voice interactive function runs successfully, False otherwise.
         """
-        import random
         num_reqs = random.choice(range(10))
         voices = ["HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_DAVID_11.0",
                   "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0",
@@ -47,6 +46,5 @@ class TestAISpeech(TestCase):
         Returns:
             Boolean value indicating success of interactive text functionality.
         """
-        import random
         num_reqs = random.choice(range(10))
         self.assertTrue(text_interact(num_reqs))
