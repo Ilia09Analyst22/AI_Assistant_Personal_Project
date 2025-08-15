@@ -52,7 +52,7 @@ def speak() -> bool:
     Logger.info(log, "Successfully ran AI speech")
     return True
 
-@chat_logging(choose_random_test_result)
+#@chat_logging(choose_random_test_result)
 def chatbox(audio_text: str) -> bool:
     """Interacts with ChatGPT for user requests.
     
@@ -78,7 +78,7 @@ def chatbox(audio_text: str) -> bool:
         except Exception:
             Logger.fatal(log, "Failed to set up speech engine for AI assistant")
             return False
-        Logger.info("Successful setup of AI speech engine")
+        Logger.info(log, "Successful setup of AI speech engine")
 
         try:
             r = sr.Recognizer()
@@ -182,4 +182,5 @@ def text_interact(requests: int) -> bool:
             return False
     return True
 
-speak()
+#speak()
+#chatbox("audio")
