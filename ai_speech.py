@@ -82,7 +82,7 @@ def chatbox(audio_text: str) -> bool:
         try:
             r = sr.Recognizer()
             with sr.Microphone() as mp:
-                r.pause_threshold(0.8)
+                r.pause_threshold = 0.8
                 print("Start speaking")
                 audio = r.listen(mp)
         except Exception as err:
