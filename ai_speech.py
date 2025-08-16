@@ -122,7 +122,7 @@ def chatbox(audio_text: str) -> bool:
             browser.get("https://chatgpt.com")
             time.sleep(2)
             browser.find_element(By.CLASS_NAME,"placeholder").send_keys(text + Keys.ENTER)
-        except Exception:
+        except Exception as err:
             Logger.error(log, f"Failed to enter data into ChatGPT: {err}")
             return False
         Logger.info(log, "Entered user request into CHATGPT")
@@ -180,4 +180,4 @@ def text_interact(requests: int) -> bool:
     return True
 
 #speak()
-#chatbox("audio")
+chatbox("text")
