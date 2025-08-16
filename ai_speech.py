@@ -15,6 +15,7 @@ from random import choice
 
 choose_random_test_result = choice([True, False])
 
+@speech_logging(choose_random_test_result)
 def speak() -> bool:
     """Allows AI assistant to speak.
 
