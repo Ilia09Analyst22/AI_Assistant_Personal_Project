@@ -96,6 +96,8 @@ def chatbox(audio_text: str) -> bool:
             browser = driver.Edge()
             browser.get("https://chatgpt.com")
             time.sleep(2)
+            browser.find_element(By.XPATH, "//*[@id='radix-«r6»']/div/div/a").click()
+            time.sleep(2)
             browser.find_element(By.CLASS_NAME,"placeholder").send_keys(audio + Keys.ENTER)
         except Exception as err:
             Logger.error(log, f"Failed to enter data into ChatGPT: {err}")
@@ -121,6 +123,8 @@ def chatbox(audio_text: str) -> bool:
 
             browser = driver.Edge()
             browser.get("https://chatgpt.com")
+            time.sleep(2)
+            browser.find_element(By.XPATH, "//*[@id='radix-«r6»']/div/div/a").click()
             time.sleep(2)
             browser.find_element(By.CLASS_NAME,"placeholder").send_keys(text + Keys.ENTER)
         except Exception as err:
