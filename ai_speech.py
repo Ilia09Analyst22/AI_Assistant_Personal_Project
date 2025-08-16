@@ -53,22 +53,26 @@ def speak() -> bool:
     return True
 
 @chat_logging(choose_random_test_result)
-def chatbox(audio_text: str) -> bool:
+def chatbox(audio_text: str, search_engine: str) -> bool:
     """Interacts with ChatGPT for user requests.
     
     User gives audio of text input to the AI assistant and the assistant 
-      will search ChatGPT and reply to the user. The assistant begins by saying
+      will search either ChatGPT or Microsoft Edge's
+      built-in AI overview and reply to the user. The assistant begins by saying
       "Hello, how can I help you?". The user then provides an audio or text response
       for the assistant to enter into ChatGPT.
 
     Args:
         audio_text: A string value indicating either 'audio' or 'text'.
-    
+        search_engine: The search engine for the AI assistant to use 
+        for user inquiry. Must be one of: 'chatGPT', 'google', 'bash', 'wikipedia'
     Returns:
         A boolean value indicating wether the chatbox function was
           implemented successfully.
     """
     log = Logger("Chatbox function")
+    assert search_engine in ["chatGPT", "google", "bash", "wikipedia"]
+
     if audio_text.lower() == "audio":
         try:
             engine = pyttsx3.init()
@@ -94,24 +98,41 @@ def chatbox(audio_text: str) -> bool:
         try:
             import time
             browser = driver.Edge()
-            browser.get("https://chatgpt.com")
-            time.sleep(2)
-            browser.find_element(By.XPATH, "//*[@id='radix-«r6»']/div/div/a").click()
-            time.sleep(2)
-            browser.find_element(By.CLASS_NAME,"placeholder").send_keys(audio + Keys.ENTER)
+            if search_engine == "chatGPT":
+                browser.get("https://chatgpt.com")
+                time.sleep(2)
+                browser.find_element(By.XPATH, "//*[@id='radix-«r6»']/div/div/a").click()
+                time.sleep(2)
+                browser.find_element(By.CLASS_NAME,"placeholder").send_keys(audio + Keys.ENTER)
+            elif search_engine == "google":
+                import pywhatkit
+                user_request = r.recognize_bing(audio)
+                response = pywhatkit.search(user_request)
+            elif search_engine == "bash":
+                pass
+            else:
+                import wikipedia
+                user_request = r.recognize_bing(audio)
+                response = wikipedia.summary(user_request, sentences=1)
         except Exception as err:
-            Logger.error(log, f"Failed to enter data into ChatGPT: {err}")
+            Logger.error(log, f"Failed to receive data from search engine: {err}")
             return False
-        Logger.info(log, "User request entered into CHATGPT successfully")
+        Logger.info(log, "User request processed by search engine")
 
         try:
-            time.sleep(10)
-            response = browser.find_element(By.XPATH, "//*[@id='thread']/div/div[1]/div/div/div[2]/article[2]/div/div/div[2]/div/div/div/p[1]").text()
-            pyttsx3.speak(response)
+            if search_engine == "chatGPT":
+                time.sleep(10)
+                response = browser.find_element(By.XPATH, "//*[@id='thread']/div/div[1]/div/div/div[2]/article[2]/div/div/div[2]/div/div/div/p[1]").text()
+                pyttsx3.speak(response)
+            else:
+                pyttsx3.speak(response)
         except Exception:
-            Logger.error(log, "An error occurred. Likely the browser failed to locate ChatGPT reply!")
-            response = WebDriverWait(browser, 20).until(EC.presence_of_element_located(response))
-            pyttsx3.speak(response)
+            if search_engine == "chatGPT":
+                Logger.error(log, "An error occurred. Likely the browser failed to locate ChatGPT reply!")
+                response = WebDriverWait(browser, 20).until(EC.presence_of_element_located(response))
+                pyttsx3.speak(response)
+            else:
+                Logger.error("An error occurred. Likely cause if search engine failure.")
         Logger.info(log, "Selenium web browsing operation successful")
 
     elif audio_text.lower() == "text":
@@ -122,22 +143,35 @@ def chatbox(audio_text: str) -> bool:
             text = input("Please enter some text: ")
 
             browser = driver.Edge()
-            browser.get("https://chatgpt.com")
-            time.sleep(2)
-            browser.find_element(By.XPATH, "//*[@id='radix-«r6»']/div/div/a").click()
-            time.sleep(2)
-            browser.find_element(By.CLASS_NAME,"placeholder").send_keys(text + Keys.ENTER)
+            
+            if search_engine == "chatGPT":
+                browser.get("https://chatgpt.com")
+                time.sleep(2)
+                browser.find_element(By.XPATH, "//*[@id='radix-«r6»']/div/div/a").click()
+                time.sleep(2)
+                browser.find_element(By.CLASS_NAME,"placeholder").send_keys(text + Keys.ENTER)
+            elif search_engine == "google":
+                import pywhatkit
+                response = pywhatkit.search(text)
+            elif search_engine == "bash":
+                pass
+            else:
+                import wikipedia
+                response = wikipedia.summary(text, sentences=1)
         except Exception as err:
-            Logger.error(log, f"Failed to enter data into ChatGPT: {err}")
+            Logger.error(log, f"Failed to enter data into {search_engine}: {err}")
             return False
-        Logger.info(log, "Entered user request into CHATGPT")
+        Logger.info(log, f"Entered user request into {search_engine}")
 
         try:
-            time.sleep(10)
-            response = browser.find_element(By.XPATH, "//*[@id='thread']/div/div[1]/div/div/div[2]/article[2]/div/div/div[2]/div/div/div/p[1]").text()
-            print(response)
+            if search_engine == "chatGPT":
+                time.sleep(10)
+                response = browser.find_element(By.XPATH, "//*[@id='thread']/div/div[1]/div/div/div[2]/article[2]/div/div/div[2]/div/div/div/p[1]").text()
+                print(response)
+            else:
+                print(response)
         except (NoSuchElementException, ElementNotVisibleException):
-            Logger.fatal(log, "Failed to locate ChatGPT generated response")
+            Logger.fatal(log, "Failed to locate search engine response")
             Logger.info(log, "Retrying...")
 
             response = WebDriverWait(browser, 20).until(EC.presence_of_element_located(response))
@@ -145,7 +179,7 @@ def chatbox(audio_text: str) -> bool:
         except Exception as err:
             Logger.error(log, f"An exception has occurred: {err}")
             return False
-        Logger.info(log, "Successfully retrieved response from ChatGPT")
+        Logger.info(log, f"Successfully retrieved response from {search_engine}")
 
     else:
         Logger.error(log, "Invalid input")
