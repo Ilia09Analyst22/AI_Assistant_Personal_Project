@@ -13,6 +13,10 @@ from selenium.common.exceptions import NoSuchElementException, ElementNotVisible
 from ai_speech_logging import speech_logging, chat_logging, voice_interact_logging, text_interact_logging
 from random import choice
 
+from dotenv import load_dotenv # load the environment variables
+import os # needed to deal with env variables and system calls
+load_dotenv()
+
 choose_random_test_result = choice([True, False])
 
 @speech_logging(choose_random_test_result)
@@ -106,13 +110,15 @@ def chatbox(audio_text: str, search_engine: str) -> bool:
                 browser.find_element(By.CLASS_NAME,"placeholder").send_keys(audio + Keys.ENTER)
             elif search_engine == "google":
                 import pywhatkit
-                user_request = r.recognize_bing(audio)
+                AZURE_KEY = os.getenv("AZURE_SPEECH_KEY"); REGION = os.getenv("AZURE_SPEECH_REGION")
+                user_request = r.recognize_azure(audio, AZURE_KEY, location=REGION)
                 response = pywhatkit.search(user_request)
             elif search_engine == "bash":
                 pass
             else:
                 import wikipedia
-                user_request = r.recognize_bing(audio)
+                AZURE_KEY = os.getenv("AZURE_SPEECH_KEY"); REGION = os.getenv("AZURE_SPEECH_REGION")
+                user_request = r.recognize_azure(audio, AZURE_KEY, location=REGION)
                 response = wikipedia.summary(user_request, sentences=1)
         except Exception as err:
             Logger.error(log, f"Failed to receive data from search engine: {err}")
@@ -219,4 +225,4 @@ def text_interact(requests: int) -> bool:
     return True
 
 #speak()
-chatbox("text")
+chatbox("audio", "google")
