@@ -15,9 +15,14 @@ from random import choice
 
 from dotenv import load_dotenv # load the environment variables
 import os # needed to deal with env variables and system calls
-load_dotenv()
+# load_dotenv()
 
 choose_random_test_result = choice([True, False])
+
+from pathlib import Path
+
+dotenv_path = Path(__file__).parent / "speech.env"
+load_dotenv(dotenv_path)
 
 @speech_logging(choose_random_test_result)
 def speak() -> bool:
@@ -109,15 +114,46 @@ def chatbox(audio_text: str, search_engine: str) -> bool:
                 time.sleep(2)
                 browser.find_element(By.CLASS_NAME,"placeholder").send_keys(audio + Keys.ENTER)
             elif search_engine == "google":
-                import pywhatkit
-                AZURE_KEY = os.getenv("AZURE_SPEECH_KEY"); REGION = os.getenv("AZURE_SPEECH_REGION")
-                user_request = r.recognize_azure(audio, AZURE_KEY, location=REGION)
-                response = pywhatkit.search(user_request)
+                import webbrowser
+
+                AZURE_KEY = os.getenv("AZURE_SPEECH_KEY")
+                REGION = os.getenv("AZURE_SPEECH_REGION")
+
+                if not AZURE_KEY or not REGION:
+                    Logger.fatal(log, "Azure credentials missing. Set AZURE_SPEECH_KEY and AZURE_SPEECH_REGION.")
+                    return False
+
+                try:
+                    user_request = r.recognize_azure(
+                        audio_data=audio,
+                        key=AZURE_KEY,
+                        location=REGION,
+                        language="en-US"
+                    )
+                except Exception as err:
+                    Logger.error(log, f"Speech recognition failed: {err}")
+                    return False
+
+                # Now launch browser and prepare a response string
+                webbrowser.open(f"https://www.google.com/search?q={user_request}")
+                response = f"Searching Google for {user_request}"
+
+                # Speak the response string
+                try:
+                    pyttsx3.speak(response)
+                except Exception as err:
+                    Logger.error(log, f"Failed to speak response: {err}")
+                    return False
+
             elif search_engine == "bash":
                 pass
             else:
                 import wikipedia
                 AZURE_KEY = os.getenv("AZURE_SPEECH_KEY"); REGION = os.getenv("AZURE_SPEECH_REGION")
+
+                # print env variables to make sure they are found
+                print(f"Azure Key: {AZURE_KEY}; Region: {REGION}")
+
                 user_request = r.recognize_azure(audio, AZURE_KEY, location=REGION)
                 response = wikipedia.summary(user_request, sentences=1)
         except Exception as err:
