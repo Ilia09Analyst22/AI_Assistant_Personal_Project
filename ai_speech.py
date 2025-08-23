@@ -239,7 +239,8 @@ def voice_interact(voice_id: str | float, requests: int) -> bool:
     log = Logger("Voice Interact Logger")
     for request in range(requests):
         try:
-            chatbox("audio")
+            search_method = choice(["chatGPT", "google", "bash", "wikipedia"])
+            chatbox("audio", search_method)
         except Exception as err:
             Logger.error(log, f"Something went wrong: {err}")
             return False
@@ -254,7 +255,8 @@ def text_interact(requests: int) -> bool:
     log = Logger("Text Interact Logger")
     for request in range(requests):
         try:
-            chatbox("text")
+            search_method = choice(["chatGPT", "google", "bash", "wikipedia"])
+            chatbox("text", search_method)
         except Exception as err:
             Logger.error(log, f"Something went wrong: {err}")
             return False
