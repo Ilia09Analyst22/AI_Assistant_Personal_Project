@@ -229,6 +229,7 @@ def chatbox(audio_text: str, search_engine: str) -> bool:
     Logger.info(log, "All operations were successfull!")
     return True
 
+@voice_interact_logging(choose_random_test_result)
 def voice_interact(voice_id: str | float, requests: int) -> bool:
     """Interactive AI voice agent.
 
@@ -246,6 +247,7 @@ def voice_interact(voice_id: str | float, requests: int) -> bool:
             return False
     return True
 
+@text_interact_logging(choose_random_test_result)
 def text_interact(requests: int) -> bool:
     """Interactive AI text agent.
     
