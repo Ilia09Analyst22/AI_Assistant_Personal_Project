@@ -174,7 +174,7 @@ def chatbox(audio_text: str, search_engine: str) -> bool:
                 response = WebDriverWait(browser, 20).until(EC.presence_of_element_located(response))
                 pyttsx3.speak(response)
             else:
-                Logger.error("An error occurred. Likely cause if search engine failure.")
+                Logger.error(log, "An error occurred. Likely cause if search engine failure.")
         Logger.info(log, "Selenium web browsing operation successful")
 
     elif audio_text.lower() == "text":
