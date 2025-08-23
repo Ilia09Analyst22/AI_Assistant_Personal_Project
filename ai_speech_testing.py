@@ -23,7 +23,8 @@ class TestAISpeech(TestCase):
             Boolean value indicating successful execution of chatbox function.
         """
         audio_or_text = random.choice(["audio", "text"])
-        self.assertTrue(chatbox(audio_or_text))
+        search_method = random.choice(["chatGPT", "google", "bash", "wikipedia"])
+        self.assertTrue(chatbox(audio_or_text, search_method))
 
     def test_voice_interact(self) -> bool:
         """Testing the interactive voice function of AI assistant.
