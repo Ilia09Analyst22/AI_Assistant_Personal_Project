@@ -30,7 +30,7 @@ class TestAINatLang(TestCase):
     def test_natlang_chunk(self):
         import nltk.tree.tree as tr
         pattern = "NP: {<DT>?<JJ>*<NN>}"
-        return self.assertIsInstance(chunk(pos(self.generic_greet),pattern), tr.Tree)
+        return self.assertIsInstance(chunk(pos("A great successful man"),pattern), tr.Tree)
     
     def test_nl_process(self):
         gg = self.generic_greet
