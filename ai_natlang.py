@@ -3,6 +3,12 @@
 # Libraries Needed
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk import pos_tag, RegexpParser
+from nltk.help import upenn_tagset as see_postags
+from nltk import download as load
+
+load("punkt")
+load("averaged_perceptron_tagger")
+load("tagsets")
 
 def sentences(text: str) -> list[str]:
     """Takes some text and breaks it into a list of sentences."""
@@ -49,7 +55,7 @@ def chunk(words_tagged: list[tuple[str,str]], pattern: str):
     word_tree = chunk_parser.parse(words_tagged)
     return word_tree
 
-def nl_processor(self, text: str) -> list[list[str]]:
+def nl_processor(text: str) -> list[list[str]]:
     """ Method for natural language processing.
         
     Args:
@@ -66,3 +72,10 @@ def nl_processor(self, text: str) -> list[list[str]]:
         line = words(line)
         processed.append(line)
     return processed
+
+def get_pos_tags():
+    """See all of the available tags for POS."""
+    return see_postags()
+
+#print(pos("Hello. How can I help you?"))
+print(get_pos_tags())
