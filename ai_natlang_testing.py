@@ -21,17 +21,21 @@ class TestAINatLang(TestCase):
         return self.assertTrue(check_with_greeting(word_sent))
     
     def test_pos(self):
+        """Test POS feature of AI NatLang."""
         return self.assertAlmostEqual(pos(self.generic_greet),[('Hello', 'NNP'), ('.', '.'), ('How', 'WRB'), ('can', 'MD'), ('I', 'PRP'), ('help', 'VB'), ('you', 'PRP'), ('?', '?')])
     
     def test_basic_chunk(self):
+        """Test chunking with generic text."""
         some_text = "A great successful man"
         return self.assertRegex(some_text, "NP: {<DT>?<JJ>*<NN>}")
     
     def test_natlang_chunk(self):
+        """Test chunk feature of AI NatLang."""
         import nltk.tree.tree as tr
         pattern = "NP: {<DT>?<JJ>*<NN>}"
         return self.assertIsInstance(chunk(pos("A great successful man"),pattern), tr.Tree)
     
     def test_nl_process(self):
+        """Test Natural Language Processing."""
         gg = self.generic_greet
         return self.assertEqual(nl_processor(gg), ["Hello",",","how","may","I","help","you","?"])
