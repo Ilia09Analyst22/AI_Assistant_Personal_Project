@@ -27,6 +27,11 @@ class TestAINatLang(TestCase):
         some_text = "A great successful man"
         return self.assertRegex(some_text, "NP: {<DT>?<JJ>*<NN>}")
     
+    def test_natlang_chunk(self):
+        import nltk.tree.tree as tr
+        pattern = "NP: {<DT>?<JJ>*<NN>}"
+        return self.assertIsInstance(chunk(pos(self.generic_greet),pattern), tr.Tree)
+    
     def test_nl_process(self):
         gg = self.generic_greet
         return self.assertEqual(nl_processor(gg), ["Hello",",","how","may","I","help","you","?"])
