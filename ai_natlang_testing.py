@@ -23,7 +23,7 @@ class TestAINatLang(TestCase):
     def test_pos(self):
         return self.assertAlmostEqual(pos(self.generic_greet),[('Hello', 'NNP'), ('.', '.'), ('How', 'WRB'), ('can', 'MD'), ('I', 'PRP'), ('help', 'VB'), ('you', 'PRP'), ('?', '?')])
     
-    def basic_chunk(self):
+    def test_basic_chunk(self):
         some_text = "A great successful man"
         return self.assertRegex(some_text, "NP: {<DT>?<JJ>*<NN>}")
     
