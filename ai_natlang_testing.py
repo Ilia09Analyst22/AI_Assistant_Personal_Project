@@ -21,10 +21,11 @@ class TestAINatLang(TestCase):
         return self.assertTrue(check_with_greeting(word_sent))
     
     def test_pos(self):
-        return
+        return self.assertAlmostEqual(pos(self.generic_greet),[('Hello', 'NNP'), ('.', '.'), ('How', 'WRB'), ('can', 'MD'), ('I', 'PRP'), ('help', 'VB'), ('you', 'PRP'), ('?', '?')])
     
-    def test_chunk(self):
-        return
+    def basic_chunk(self):
+        some_text = "A great successful man"
+        return self.assertRegex(some_text, "NP: {<DT>?<JJ>*<NN>}")
     
     def test_nl_process(self):
         gg = self.generic_greet

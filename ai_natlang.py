@@ -78,4 +78,5 @@ def get_pos_tags():
     return see_postags()
 
 #print(pos("Hello. How can I help you?"))
-print(get_pos_tags())
+#print(get_pos_tags())
+print(type(chunk(pos("A great successful man"), "NP: {<DT>?<JJ>*<NN>}")))
