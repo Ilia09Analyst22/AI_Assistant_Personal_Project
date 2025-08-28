@@ -2,7 +2,7 @@
 
 # Libraries needed
 from unittest.case import TestCase
-from ai_natlang import check_with_greeting, pos, chunk, nl_processor
+from ai_natlang import check_with_greeting, pos, chunk, nl_processor, words, sentences
 from nltk import pos_tag
 import re
 import sklearn as sl
@@ -43,5 +43,51 @@ class TestAINatLang(TestCase):
         gg = self.generic_greet
         return self.assertEqual(nl_processor(gg), ["Hello",",","how","may","I","help","you","?"])
     
+    def regex(self):
+        """Test Regex and sentence tokenization."""
+        import random
 
+        greeting = random.choice(["Hello. How can I help you?", self.generic_greet])
+        sent_list = sentences(greeting)
+
+        # Set four check conditions for passing test
+        check1 = False
+        check2 = False
+        check3 = False
+        check4 = False
+
+        def re_search(lookup: str, text: str) -> bool:
+            """A method to lookup a phrase/pattern in text.
+            
+            Args:
+                lookup: Phrase/pattern to search for in text.
+                text: The text to search in.
+            
+            Returns:
+                True if the lookup is found inside text, False otherwise.
+            """
+            find_match = re.search(lookup, text)
+            if not find_match:
+                return False
+            else:
+                return True
+            
+        for sent in sent_list:
+            if not check1:
+                check1 = re_search(lookup="Hello.", text=sent)
+            
+            if not check2 and re.search("How", sent, re.IGNORECASE):
+                pos = pos_tag("How")
+                tag = pos[1]
+                if tag == "WRB":
+                    check2 = True
         
+            if not check3:
+                check3 = re_search(lookup="I help", text=sent)
+            
+            if not check4 and "?" in sent:
+                check4 = re_search(lookup="you", text=sent)
+        
+        assert (check1 and check2 and check3 and check4)
+    
+        return True
