@@ -3,6 +3,7 @@
 # Libraries needed
 from unittest.case import TestCase
 from ai_natlang import check_with_greeting, pos, chunk, nl_processor
+from nltk import pos_tag
 import re
 import sklearn as sl
 
@@ -41,3 +42,6 @@ class TestAINatLang(TestCase):
         """Test Natural Language Processing."""
         gg = self.generic_greet
         return self.assertEqual(nl_processor(gg), ["Hello",",","how","may","I","help","you","?"])
+    
+
+        
