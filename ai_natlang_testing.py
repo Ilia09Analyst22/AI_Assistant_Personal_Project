@@ -3,6 +3,8 @@
 # Libraries needed
 from unittest.case import TestCase
 from ai_natlang import check_with_greeting, pos, chunk, nl_processor
+import re
+import sklearn as sl
 
 class TestAINatLang(TestCase):
     """Method for testing AI NatLang features."""
