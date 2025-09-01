@@ -141,11 +141,11 @@ class TestAINatLang(TestCase):
                     text_words = []
             
             # Train/test data using enumerated text csv
-            train_data_x = text_enum[0:8][0:600]
-            test_data_x = text_enum[0:8][601:1000]
+            train_data_x = text_enum[0:8][0:15]
+            test_data_x = text_enum[0:8][16:19]
 
-            train_data_y = text_enum[9][0:600]
-            test_data_y = text_enum[9][601:1000]
+            train_data_y = text_enum[9][0:15]
+            test_data_y = text_enum[9][16:19]
 
             if self.model == "log_regr":
                 model = linear_model.LogisticRegression()
