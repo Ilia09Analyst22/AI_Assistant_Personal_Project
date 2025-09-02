@@ -201,6 +201,6 @@ class TestAINatLang(TestCase):
             print(f"The model returned these predictions: {prediction}")
             print(f"These are the actual values from the dataset: {model_sentiment()[1]}")
 
-    if __name__ == "__main__":
-        import unittest as test
-        test.main()
+if __name__ == "__main__":
+    import unittest as test
+    test.main()
