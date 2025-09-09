@@ -146,7 +146,22 @@ def chatbox(audio_text: str, search_engine: str) -> bool:
                     return False
 
             elif search_engine == "bash":
-                pass
+
+                AZURE_KEY = os.getenv("AZURE_SPEECH_KEY")
+                REGION = os.getenv("AZURE_SPEECH_REGION")
+
+                try:
+                    user_request = r.recognize_azure(
+                        audio_data=audio,
+                        key=AZURE_KEY,
+                        location=REGION,
+                        language="en-US"
+                    )
+                except Exception as err:
+                    Logger.error(log, f"Speech recognition failed: {err}")
+                    return False
+
+                os.system(f"./ai_shell.sh user_request={user_request}")
             else:
                 import wikipedia
                 AZURE_KEY = os.getenv("AZURE_SPEECH_KEY"); REGION = os.getenv("AZURE_SPEECH_REGION")
@@ -196,7 +211,8 @@ def chatbox(audio_text: str, search_engine: str) -> bool:
                 import pywhatkit
                 response = pywhatkit.search(text)
             elif search_engine == "bash":
-                pass
+                import os
+                os.system(f"./ai_shell.sh user_response={text}")
             else:
                 import wikipedia
                 response = wikipedia.summary(text, sentences=1)
