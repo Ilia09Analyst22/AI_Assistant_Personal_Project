@@ -29,23 +29,37 @@ class TestAINatLang(TestCase):
     
     def test_pos(self):
         """Test POS feature of AI NatLang."""
-        self.assertAlmostEqual(pos(self.generic_greet),[('Hello', 'NNP'), ('.', '.'), ('How', 'WRB'), ('can', 'MD'), ('I', 'PRP'), ('help', 'VB'), ('you', 'PRP'), ('?', '?')])
+        self.assertEqual(pos(self.generic_greet),[('Hello', 'NNP'), (',', ','), ('how', 'WRB'), ('may', 'MD'), ('I', 'PRP'), ('help', 'VB'), ('you', 'PRP'), ('?', '.')])
     
     def test_basic_chunk(self):
         """Test chunking with generic text."""
+        import nltk
+
         some_text = "A great successful man"
-        self.assertRegex(some_text, "NP: {<DT>?<JJ>*<NN>}")
+        tokens = some_text.split()
+        tagged = nltk.pos_tag(tokens)
+
+        grammar = "NP: {<DT>?<JJ>*<NN>}"
+        cp = nltk.RegexpParser(grammar)
+        tree = cp.parse(tagged)
+
+        # Collect all NP subtrees
+        chunks = [" ".join(word for word, tag in subtree.leaves())
+                for subtree in tree.subtrees()
+                if subtree.label() == "NP"]
+
+        self.assertIn("A great successful man", chunks)
     
     def test_natlang_chunk(self):
         """Test chunk feature of AI NatLang."""
-        import nltk.tree.tree as tr
+        from nltk.tree.tree import Tree
         pattern = "NP: {<DT>?<JJ>*<NN>}"
-        self.assertIsInstance(chunk(pos("A great successful man"),pattern), tr.Tree)
+        self.assertIsInstance(chunk(pos("A great successful man"),pattern), Tree)
     
     def test_nl_process(self):
         """Test Natural Language Processing."""
         gg = self.generic_greet
-        self.assertEqual(nl_processor(gg), ["Hello",",","how","may","I","help","you","?"])
+        self.assertEqual(nl_processor(gg)[0], ["Hello",",","how","may","I","help","you","?"])
     
     def regex(self):
         """Test Regex and sentence tokenization."""
