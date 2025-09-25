@@ -4,7 +4,6 @@
 import pyttsx3
 import speech_recognition as sr
 import pywhatkit
-import yfinance as yf
 import webbrowser
 import datetime
 import wikipedia
@@ -178,6 +177,7 @@ class AIAssistant(AIProcessor):
         """
         pass
 
+    @voice_interact_logging(test_result)
     def transform_audio_to_text(self) -> str:
         """Method for AI to turn audio into text.
         
@@ -213,7 +213,8 @@ class AIAssistant(AIProcessor):
                 response = "I am still waiting"
         
         return response
-    
+
+    @speech_logging(test_result)
     def speak(self, message) -> None:
         """A method to allow AI assistant to speak.
         
@@ -227,6 +228,7 @@ class AIAssistant(AIProcessor):
         engine.say(message)
         engine.runAndWait()
 
+    @text_interact_logging(test_result)
     def transform_text_to_audio(self) -> None:
         """Method for AI to turn text into audio."""
         # Prompt for user to input text to be transformed
@@ -373,5 +375,5 @@ class AIAssistant(AIProcessor):
                     reply = pywhatkit.search(request)
                     self.speak(f"This is what I found: {reply}")
 
-my_assistant = AIAssistant("en-us","male")
-my_assistant.get_voices()
+my_assistant = AIAssistant("en-us","female")
+my_assistant.transform_audio_to_text()
