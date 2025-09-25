@@ -193,7 +193,7 @@ class AIAssistant(AIProcessor):
         with sr.Microphone() as mp:
             
             # wait
-            r.pause_threshold(0.8)
+            r.pause_threshold = 0.8
 
             # message telling user that recording starts
             print("Start speaking")
